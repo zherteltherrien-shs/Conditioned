@@ -632,6 +632,141 @@
     0% { transform: translateY(-30px) rotate(0deg); opacity: 1; }
     100% { transform: translateY(110vh) rotate(720deg); opacity: 0.4; }
   }
+  /* ── BOSS BATTLE OVERLAY ──────────────────────────────────── */
+  .boss-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.7), rgba(0,0,0,0.95));
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 300ms;
+    backdrop-filter: blur(4px);
+  }
+  .boss-overlay.active { opacity: 1; pointer-events: auto; }
+  .boss-hud {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 110;
+    background: linear-gradient(180deg, rgba(0,0,0,0.9), transparent);
+    padding: 16px 28px 24px;
+    display: none;
+  }
+  .boss-hud.active { display: block; }
+  .boss-hud-inner {
+    max-width: 700px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .boss-title-area { display: flex; align-items: center; gap: 12px; }
+  .boss-icon {
+    font-size: 28px; line-height: 1;
+    animation: bossGlow 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes bossGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.6) drop-shadow(0 0 8px var(--accent)); }
+  }
+  .boss-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .boss-subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(241,230,204,0.5);
+  }
+  .boss-hp-area { flex: 1; max-width: 320px; }
+  .boss-hp-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--signal); margin-bottom: 4px;
+    display: flex; justify-content: space-between;
+  }
+  .boss-hp-bar {
+    height: 14px; background: rgba(241,230,204,0.1);
+    border-radius: 2px; overflow: hidden; position: relative;
+    border: 1px solid rgba(241,230,204,0.15);
+  }
+  .boss-hp-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--signal), var(--signal-2));
+    transition: width 500ms cubic-bezier(.2,.7,.2,1);
+    box-shadow: 0 0 12px var(--signal);
+  }
+  .boss-hp-fill.critical {
+    animation: hpFlash 400ms infinite alternate;
+  }
+  @keyframes hpFlash {
+    0% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  .boss-timer-area { text-align: right; min-width: 70px; }
+  .boss-timer {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px; font-weight: 600; color: var(--paper);
+    line-height: 1;
+  }
+  .boss-timer.urgent { color: var(--signal); animation: hpFlash 500ms infinite alternate; }
+  .boss-timer-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(241,230,204,0.5);
+  }
+  .boss-multiplier {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    color: var(--accent); text-align: center;
+    margin-top: 4px;
+  }
+  .boss-intro {
+    text-align: center; animation: fadeIn 400ms ease-out;
+  }
+  .boss-intro-icon { font-size: 64px; margin-bottom: 16px; animation: bossGlow 1s ease-in-out infinite alternate; }
+  .boss-intro-title {
+    font-family: 'Fraunces', serif; font-weight: 800;
+    font-size: clamp(32px,5vw,52px); color: var(--accent);
+    letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px;
+  }
+  .boss-intro-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--paper); margin-bottom: 20px;
+  }
+  .boss-intro-rules {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; line-height: 1.7; letter-spacing: 0.05em;
+    color: rgba(241,230,204,0.7); margin-bottom: 24px;
+  }
+  .boss-start-btn {
+    background: var(--accent); color: var(--ink); border: none;
+    padding: 14px 32px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; cursor: pointer; border-radius: 2px;
+    transition: transform 120ms, box-shadow 200ms;
+  }
+  .boss-start-btn:hover { transform: scale(1.04); box-shadow: 0 0 20px var(--accent); }
+  .boss-result {
+    text-align: center; animation: fadeIn 400ms ease-out;
+  }
+  .boss-result-icon { font-size: 56px; margin-bottom: 12px; }
+  .boss-result-title {
+    font-family: 'Fraunces', serif; font-weight: 800;
+    font-size: 42px; line-height: 1; margin-bottom: 8px;
+  }
+  .boss-result-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: 0.12em;
+    color: rgba(241,230,204,0.7); margin-bottom: 8px;
+  }
+  .boss-result-stats {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; line-height: 1.8; letter-spacing: 0.06em;
+    color: var(--paper); margin-bottom: 20px;
+  }
+  .boss-continue-btn {
+    background: var(--paper); color: var(--ink); border: none;
+    padding: 12px 28px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; cursor: pointer; border-radius: 2px;
+  }
+  .boss-continue-btn:hover { background: var(--accent); }
     /* ── LOGIN ─── */
   .login-overlay { position: fixed; inset: 0; background: rgba(10,4,4,0.96); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(12px); }
   .login-overlay.hidden { display: none; }
@@ -935,6 +1070,52 @@
     <span>CONDITIONED<span style="color:var(--accent)">.</span> · For classroom use</span>
     <span>Built on Skinner, Pavlov, Tversky &amp; Kahneman, Festinger, Bandura, Cialdini · 2026</span>
   </footer>
+</div>
+<!-- BOSS BATTLE -->
+<div class="boss-overlay" id="bossOverlay">
+  <div id="bossIntroScreen" class="boss-intro">
+    <div class="boss-intro-icon" id="bossIntroIcon"></div>
+    <div class="boss-intro-title">BOSS BATTLE</div>
+    <div class="boss-intro-name" id="bossIntroName"></div>
+    <div class="boss-intro-rules">
+      5 questions · 60 seconds · 2x points<br>
+      Every correct answer drains the boss HP.<br>
+      Wrong answers heal the boss. Don't let time run out.
+    </div>
+    <button class="boss-start-btn" onclick="startBossFight()">ENGAGE ▸</button>
+  </div>
+  <div id="bossResultScreen" class="boss-result" style="display:none">
+    <div class="boss-result-icon" id="bossResultIcon"></div>
+    <div class="boss-result-title" id="bossResultTitle"></div>
+    <div class="boss-result-sub" id="bossResultSub"></div>
+    <div class="boss-result-stats" id="bossResultStats"></div>
+    <button class="boss-continue-btn" onclick="endBossBattle()">CONTINUE ▸</button>
+  </div>
+</div>
+<div class="boss-hud" id="bossHud">
+  <div class="boss-hud-inner">
+    <div class="boss-title-area">
+      <div class="boss-icon" id="bossHudIcon"></div>
+      <div>
+        <div class="boss-name" id="bossHudName"></div>
+        <div class="boss-subtitle">Boss Battle</div>
+      </div>
+    </div>
+    <div class="boss-hp-area">
+      <div class="boss-hp-label">
+        <span>HP</span>
+        <span id="bossHpText">5 / 5</span>
+      </div>
+      <div class="boss-hp-bar">
+        <div class="boss-hp-fill" id="bossHpFill" style="width:100%"></div>
+      </div>
+      <div class="boss-multiplier">2x POINTS ACTIVE</div>
+    </div>
+    <div class="boss-timer-area">
+      <div class="boss-timer" id="bossTimer">60</div>
+      <div class="boss-timer-label">seconds</div>
+    </div>
+  </div>
 </div>
 <div class="jackpot" id="jackpot">
   <div class="label">▸ JACKPOT ◂</div>
@@ -1350,12 +1531,7 @@ function handleAnswer(idx, btnEl){
       triggerCrate();
     }
 
-    // Boss battle check (every 25 questions)
-    if(state.asked % 25 === 0){
-      manipulation = "bossBattle";
-      // Boss is just a harder question with bonus multiplier - visual flair
-      document.getElementById("rewardFlash").textContent = "⚔ BOSS INCOMING...";
-    }
+    // Boss battle queued check (handled after answer resolution)
 
     // Goal gradient - close to level up
     const pctToLevel = state.xp / state.xpToNext;
@@ -1403,6 +1579,10 @@ function handleAnswer(idx, btnEl){
 }
 
 function nextQuestion(){
+  if(shouldTriggerBoss()){
+    triggerBossIntro();
+    return;
+  }
   renderQuestion();
 }
 
@@ -1585,6 +1765,281 @@ document.addEventListener("keydown", (e)=>{
     nextQuestion();
   }
 });
+
+/* ══════════════════════════════════════════════════════════════
+   BOSS BATTLE SYSTEM
+   ══════════════════════════════════════════════════════════════ */
+const BOSSES = [
+  {name:"The Amygdala",       icon:"\u{1F9E0}", unit:"1", taunt:"Fear is my weapon."},
+  {name:"Broca's Phantom",    icon:"\u{1F5E3}", unit:"1", taunt:"Words fail you here."},
+  {name:"The Id",             icon:"\u{1F525}", unit:"2", taunt:"Resist your impulses."},
+  {name:"Schema Lord",        icon:"\u{1F578}", unit:"2", taunt:"I define your reality."},
+  {name:"Pavlov's Hound",     icon:"\u{1F43A}", unit:"3", taunt:"You've been conditioned."},
+  {name:"The Bystander",      icon:"\u{1F440}", unit:"4", taunt:"No one is coming to help."},
+  {name:"Milgram's Ghost",    icon:"\u{26A1}", unit:"4", taunt:"Obey the authority."},
+  {name:"The DSM Keeper",     icon:"\u{1F4D6}", unit:"5", taunt:"I classify your mind."},
+  {name:"Cognitive Dissonance",icon:"\u{1F500}",unit:"3", taunt:"Believe what I tell you."},
+  {name:"Confirmation Bias",  icon:"\u{1F50D}", unit:"2", taunt:"You only see what you want."}
+];
+
+let bossState = {
+  active: false,
+  phase: "idle",    // idle, intro, fighting, result
+  boss: null,
+  hp: 5,
+  maxHp: 5,
+  questionsLeft: 5,
+  bossCorrect: 0,
+  bossWrong: 0,
+  bossPoints: 0,
+  timer: 60,
+  timerInterval: null
+};
+
+function shouldTriggerBoss(){
+  // Every 10 regular questions, and not during a boss fight
+  return !bossState.active && state.asked > 0 && state.asked % 10 === 0;
+}
+
+function triggerBossIntro(){
+  bossState.active = true;
+  bossState.phase = "intro";
+  bossState.boss = BOSSES[Math.floor(Math.random()*BOSSES.length)];
+  bossState.hp = 5;
+  bossState.maxHp = 5;
+  bossState.questionsLeft = 5;
+  bossState.bossCorrect = 0;
+  bossState.bossWrong = 0;
+  bossState.bossPoints = 0;
+  bossState.timer = 60;
+
+  // Show intro screen
+  document.getElementById("bossIntroScreen").style.display = "";
+  document.getElementById("bossResultScreen").style.display = "none";
+  document.getElementById("bossIntroIcon").textContent = bossState.boss.icon;
+  document.getElementById("bossIntroName").textContent = bossState.boss.name + " — \"" + bossState.boss.taunt + "\"";
+  document.getElementById("bossOverlay").classList.add("active");
+
+  setManipulation("bossBattle");
+}
+
+function startBossFight(){
+  bossState.phase = "fighting";
+
+  // Hide intro, show HUD
+  document.getElementById("bossOverlay").classList.remove("active");
+  document.getElementById("bossIntroScreen").style.display = "none";
+  document.getElementById("bossHud").classList.add("active");
+  document.getElementById("bossHudIcon").textContent = bossState.boss.icon;
+  document.getElementById("bossHudName").textContent = bossState.boss.name;
+  updateBossHUD();
+
+  // Start timer
+  bossState.timerInterval = setInterval(()=>{
+    bossState.timer--;
+    updateBossTimer();
+    if(bossState.timer <= 0){
+      clearInterval(bossState.timerInterval);
+      bossDefeat(false);
+    }
+  }, 1000);
+
+  // Load first boss question (prefer the boss's unit)
+  renderBossQuestion();
+}
+
+function renderBossQuestion(){
+  // Pick from the boss's unit if possible
+  let pool = QUESTIONS.filter(q => q.unit === bossState.boss.unit);
+  if(pool.length < 5) pool = [...QUESTIONS];
+  const q = pool[Math.floor(Math.random()*pool.length)];
+  currentQ = q;
+  answered = false;
+  questionStart = Date.now();
+
+  const card = document.getElementById("card");
+  card.setAttribute("data-q", "BOSS");
+  document.getElementById("unitTag").textContent = "BOSS";
+  document.getElementById("conceptTag").textContent = bossState.boss.name;
+  document.getElementById("prompt").innerHTML = currentQ.prompt;
+
+  const choicesEl = document.getElementById("choices");
+  choicesEl.innerHTML = "";
+  const letters = ["A","B","C","D","E"];
+  currentQ.choices.forEach((ch, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.innerHTML = '<span class="letter">'+letters[i]+'</span>' + ch;
+    btn.onclick = () => handleBossAnswer(i, btn);
+    choicesEl.appendChild(btn);
+  });
+
+  document.getElementById("explanation").classList.remove("show");
+  document.getElementById("nextBtn").classList.add("hidden");
+  document.getElementById("rewardFlash").textContent = "";
+}
+
+function handleBossAnswer(idx, btnEl){
+  if(answered || bossState.phase !== "fighting") return;
+  answered = true;
+  state.asked++;
+  state.daily++;
+  bossState.questionsLeft--;
+
+  const isCorrect = (idx === currentQ.correct);
+  const speed = Date.now() - questionStart;
+  const allBtns = document.querySelectorAll(".choice");
+  allBtns.forEach(b => b.disabled = true);
+
+  if(isCorrect){
+    btnEl.classList.add("correct");
+    state.correct++;
+    state.streak++;
+    if(state.streak > state.bestStreak) state.bestStreak = state.streak;
+    state.unitCorrect[currentQ.unit] = (state.unitCorrect[currentQ.unit]||0) + 1;
+    state.unitAsked[currentQ.unit] = (state.unitAsked[currentQ.unit]||0) + 1;
+
+    // 2x points during boss
+    let pts = 20; // base 10 * 2x
+    if(speed < 5000) pts += 10;
+    if(speed < 3000) pts += 10;
+    if(state.streak >= 5) pts += Math.floor(state.streak * 2);
+
+    state.wisdom += pts;
+    state.xp += pts;
+    bossState.bossPoints += pts;
+    bossState.bossCorrect++;
+
+    // Damage boss
+    bossState.hp--;
+    updateBossHUD();
+    spawnFloater("+" + pts + " (2x)", btnEl);
+    document.getElementById("rewardFlash").textContent = "HIT! -1 HP";
+
+    checkLevelUp();
+
+    // Check boss killed
+    if(bossState.hp <= 0){
+      clearInterval(bossState.timerInterval);
+      bossDefeat(true);
+    }
+  } else {
+    btnEl.classList.add("wrong");
+    allBtns[currentQ.correct].classList.add("reveal");
+    state.unitAsked[currentQ.unit] = (state.unitAsked[currentQ.unit]||0) + 1;
+
+    // Boss heals 1 HP on wrong answer
+    bossState.hp = Math.min(bossState.hp + 1, bossState.maxHp);
+    bossState.bossWrong++;
+    state.streak = 0;
+
+    const loss = Math.min(5, state.wisdom);
+    state.wisdom -= loss;
+
+    updateBossHUD();
+    document.getElementById("rewardFlash").textContent = "MISS! Boss heals +1 HP";
+
+    document.getElementById("streakBlock").classList.add("broken");
+    setTimeout(()=>document.getElementById("streakBlock").classList.remove("broken"), 600);
+  }
+
+  // Show explanation
+  document.getElementById("explanationText").textContent = currentQ.why;
+  document.getElementById("explanation").classList.add("show");
+
+  updateAllUI();
+  saveProgress();
+
+  // Auto-advance boss questions after a short delay (keep the pressure on)
+  if(bossState.hp > 0 && bossState.phase === "fighting"){
+    if(bossState.questionsLeft > 0){
+      document.getElementById("nextBtn").classList.remove("hidden");
+      document.getElementById("nextBtn").onclick = ()=> {
+        document.getElementById("nextBtn").onclick = ()=> nextQuestion(); // reset
+        renderBossQuestion();
+      };
+    } else {
+      // Ran out of 5 questions without killing boss
+      clearInterval(bossState.timerInterval);
+      setTimeout(()=> bossDefeat(bossState.hp <= 0), 800);
+    }
+  }
+}
+
+function bossDefeat(playerWon){
+  bossState.phase = "result";
+  document.getElementById("bossHud").classList.remove("active");
+
+  const screen = document.getElementById("bossResultScreen");
+  const intro = document.getElementById("bossIntroScreen");
+  intro.style.display = "none";
+  screen.style.display = "";
+  document.getElementById("bossOverlay").classList.add("active");
+
+  if(playerWon){
+    state.bossesDefeated++;
+    // Victory bonus
+    const victoryBonus = 50 + (bossState.timer * 2); // time bonus
+    state.wisdom += victoryBonus;
+    state.xp += victoryBonus;
+    bossState.bossPoints += victoryBonus;
+    checkLevelUp();
+
+    document.getElementById("bossResultIcon").textContent = "\u{1F3C6}";
+    document.getElementById("bossResultTitle").style.color = "var(--accent)";
+    document.getElementById("bossResultTitle").textContent = "BOSS DEFEATED";
+    document.getElementById("bossResultSub").textContent = bossState.boss.name + " has been vanquished";
+    document.getElementById("bossResultStats").innerHTML =
+      "Correct: " + bossState.bossCorrect + "/5<br>" +
+      "Time remaining: " + bossState.timer + "s<br>" +
+      "Time bonus: +" + (bossState.timer * 2) + " pts<br>" +
+      "Victory bonus: +50 pts<br>" +
+      "Total earned: +" + bossState.bossPoints + " wisdom";
+    spawnConfetti();
+    spawnConfetti();
+  } else {
+    document.getElementById("bossResultIcon").textContent = "\u{1F480}";
+    document.getElementById("bossResultTitle").style.color = "var(--signal)";
+    document.getElementById("bossResultTitle").textContent = bossState.timer <= 0 ? "TIME'S UP" : "BOSS SURVIVES";
+    document.getElementById("bossResultSub").textContent = bossState.boss.name + " — \"" + bossState.boss.taunt + "\"";
+    document.getElementById("bossResultStats").innerHTML =
+      "Correct: " + bossState.bossCorrect + "/5<br>" +
+      "Boss HP remaining: " + bossState.hp + "/" + bossState.maxHp + "<br>" +
+      "Points earned: +" + bossState.bossPoints + " wisdom<br>" +
+      "You'll face another boss in 10 questions.";
+  }
+
+  updateAllUI();
+  saveProgress();
+}
+
+function endBossBattle(){
+  bossState.active = false;
+  bossState.phase = "idle";
+  document.getElementById("bossOverlay").classList.remove("active");
+  document.getElementById("bossHud").classList.remove("active");
+  document.getElementById("bossResultScreen").style.display = "none";
+  // Reset next button handler
+  document.getElementById("nextBtn").onclick = ()=> nextQuestion();
+  renderQuestion();
+}
+
+function updateBossHUD(){
+  const pct = Math.max(0, bossState.hp / bossState.maxHp * 100);
+  document.getElementById("bossHpFill").style.width = pct + "%";
+  document.getElementById("bossHpText").textContent = bossState.hp + " / " + bossState.maxHp;
+  // Critical animation when low
+  const fill = document.getElementById("bossHpFill");
+  if(pct <= 30) fill.classList.add("critical");
+  else fill.classList.remove("critical");
+}
+
+function updateBossTimer(){
+  const el = document.getElementById("bossTimer");
+  el.textContent = bossState.timer;
+  if(bossState.timer <= 10) el.classList.add("urgent");
+  else el.classList.remove("urgent");
+}
 
 /* ── THEME SYSTEM ─── */
 const THEMES = [
